@@ -1,0 +1,182 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<style>
+  .product-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+
+  .product-image {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+  }
+
+  .product-image:hover {
+    transform: scale(1.02);
+  }
+
+  .product-header {
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .condition-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .condition-excellent {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .condition-good {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  .condition-fair {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+
+  .price-tag {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: 1rem 0;
+  }
+
+  .custom-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .custom-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .custom-list li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+  }
+
+  @media (max-width: 768px) {
+    .product-container {
+      padding: 1.5rem;
+    }
+
+    .price-tag {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+{% load humanize %}
+<div class="container py-5">
+  <div class="product-container">
+    <div class="row">
+      <div class="col-md-5">
+        <img
+          src="{{ iphone.gambar }}"
+          alt="{{ iphone.nama }}"
+          class="img-fluid rounded product-image"
+        />
+      </div>
+      <div class="col-md-7">
+        <div class="product-header">
+          <h2 class="fw-bold mb-2">{{ iphone.nama }}</h2>
+          <div class="price-tag">
+            Rp {{ iphone.harga|floatformat:0|intcomma }}
+          </div>
+        </div>
+
+        <h5 class="mb-3">📱 Spesifikasi:</h5>
+        <ul class="specs-list">
+          <li>
+            <strong>Kualitas Kamera:</strong> {{ iphone.kamera }}%
+            <!-- Additional Info Section -->
+            {% if iphone.kamera >= 48 %}
+            <span class="condition-badge condition-excellent">Sangat Baik</span>
+            {% elif iphone.kamera >= 24 %}
+            <span class="condition-badge condition-good">Baik</span>
+            {% else %}
+            <span class="condition-badge condition-fair">Cukup</span>
+            {% endif %}
+          </li>
+          <li><strong>Memori Internal:</strong> {{ iphone.memori }} GB</li>
+          <li>
+            <strong>Kondisi Fisik:</strong>
+            {{ iphone.kondisi_fisik }}% {% if iphone.kondisi_fisik >= 90 %}
+            <span class="condition-badge condition-excellent">Sangat Baik</span>
+            {% elif iphone.kondisi_fisik >= 80 %}
+            <span class="condition-badge condition-good">Baik</span>
+            {% else %}
+            <span class="condition-badge condition-fair">Cukup</span>
+            {% endif %}
+          </li>
+          <li>
+            <strong>Kondisi Baterai:</strong>
+            {{ iphone.kondisi_baterai }}% {% if iphone.kondisi_baterai >= 90 %}
+            <span class="condition-badge condition-excellent">Sangat Baik</span>
+            {% elif iphone.kondisi_baterai >= 80 %}
+            <span class="condition-badge condition-good">Baik</span>
+            {% else %}
+            <span class="condition-badge condition-fair">Cukup</span>
+            {% endif %}
+          </li>
+        </ul>
+
+        <div class="d-flex gap-3 mt-4">
+          <a href="{% url 'index' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Kembali
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional Info Section -->
+  <div class="info-section">
+    <h4 class="mb-3">Tentang iPhone {{ iphone.nama }}</h4>
+    <p>
+      iPhone {{ iphone.nama }} adalah pilihan yang tepat bagi Anda yang mencari
+      smartphone dengan performa handal dan kualitas kamera yang baik. Dengan
+      kondisi fisik {{ iphone.kondisi_fisik }}% dan baterai
+      <!-- Additional Info Section -->{{ iphone.kondisi_baterai }}%, iPhone ini
+      masih dalam kondisi yang sangat baik untuk penggunaan sehari-hari.
+    </p>
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <h5>Keunggulan Produk:</h5>
+        <ul class="custom-list">
+          <li>
+            Kamera {{ iphone.kamera }} % untuk foto dan video berkualitas tinggi
+          </li>
+          <li>
+            Memori Internal {{ iphone.memori }} GB untuk performa multitasking
+            yang lancar
+          </li>
+          <li>Kondisi fisik terawat dengan baik</li>
+          <li>Baterai masih dalam kondisi prima</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<style>
+  .form-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 3rem;
+    margin: 2rem 0;
+  }
+  .input-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .input-header h1 {
+    color: #000;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .custom-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .custom-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .custom-list li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .form-container {
+      padding: 2rem 1.5rem;
+      margin: 1rem 0;
+    }
+  }
+</style>
+<!-- Main Content -->
+<main class="container py-5">
+  <!-- Form Section -->
+  <section class="form-container">
+    <div class="input-header">
+      <h1 class="mb-4 text-center">Berikan Bobot Kriteria</h1>
+      <p class="text-center mb-4">
+        Masukkan tingkat kepentingan (bobot) untuk setiap kriteria. Skala 1
+        (Tidak Penting) hingga 5 (Sangat Penting).
+      </p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <!-- Kriteria Inputs -->
+      <div class="row">
+        {% for kriteria in kriteria %}
+        <div class="col-md-6 mb-4">
+          <div class="criteria-input">
+            <label for="{{ kriteria.nama }}" class="form-label criteria-label"
+              >{{ kriteria.nama }}</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="{{ kriteria.nama }}"
+              min="1"
+              max="5"
+              required
+            />
+            <div class="rating-info mt-1">
+              <small>1 = Tidak Penting, 5 = Sangat Penting</small>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-dark btn-lg">
+          <i class="fas fa-calculator me-2"></i>Dapatkan Rekomendasi
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Features Section -->
+  <section class="row mb-5 mt-5">
+    <div class="col-md-4 mb-4">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-sliders-h"></i>
+        </div>
+        <h4>Kriteria Fleksibel</h4>
+        <p>
+          Tentukan sendiri tingkat kepentingan setiap kriteria sesuai kebutuhan
+          Anda.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-mobile-alt"></i>
+        </div>
+        <h4>Rekomendasi Akurat</h4>
+        <p>
+          Dapatkan rekomendasi iPhone bekas yang paling sesuai dengan preferensi
+          Anda.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h4>Analisis Mendalam</h4>
+        <p>
+          Sistem menggunakan metode SAW untuk memberikan hasil yang optimal.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Section -->
+  <section class="info-section">
+    <h3 class="mb-3">Bagaimana Sistem Bekerja?</h3>
+    <p>
+      Sistem rekomendasi ini menggunakan metode Simple Additive Weighting (SAW)
+      untuk menentukan iPhone bekas terbaik berdasarkan preferensi Anda. Metode
+      ini mempertimbangkan berbagai kriteria seperti harga, kondisi,
+      spesifikasi, dan lainnya yang telah Anda berikan bobotnya.
+    </p>
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <h5>Langkah-langkah:</h5>
+        <ul class="custom-list">
+          <li>Masukkan bobot untuk setiap kriteria (1-5)</li>
+          <li>Sistem akan menghitung nilai untuk setiap alternatif iPhone</li>
+          <li>iPhone dengan nilai tertinggi akan direkomendasikan</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <h5>Kriteria yang Dipertimbangkan:</h5>
+        <ul class="custom-list">
+          {% for kriteria in kriteria %}
+          <li>{{ kriteria.nama }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

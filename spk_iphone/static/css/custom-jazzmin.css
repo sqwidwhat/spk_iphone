@@ -1,0 +1,15 @@
+/* Navbar atas */
+.main-header.navbar {
+  background-color: red !important; /* Ganti dengan warna kamu */
+}
+
+/* Sidebar */
+.main-sidebar {
+  background-color: #1a1a1a !important;
+}
+
+/* Warna teks di navbar */
+.main-header .nav-link,
+.main-header .navbar-brand {
+  color: #fff !important;
+}

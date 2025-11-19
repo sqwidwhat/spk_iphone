@@ -1,0 +1,448 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Tentang Kami -
+iPhone Recommender{% endblock %} {% block extra_css %}
+<style>
+  /* About Section Styles */
+  .about-section {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 3rem;
+    margin: 2rem 0;
+  }
+
+  .about-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .about-header h1 {
+    color: #000;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .about-header p {
+    color: #6c757d;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .feature-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid var(--primary-color);
+    text-align: center;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .feature-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), #000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 2rem;
+  }
+
+  .feature-card h4 {
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card p {
+    color: #6c757d;
+    line-height: 1.6;
+  }
+
+  /* Developer Section */
+  .developer-section {
+    margin-top: 4rem;
+    text-align: center;
+  }
+
+  .developer-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 3rem;
+    max-width: 500px;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+  }
+
+  .developer-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .developer-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1.5rem;
+    border: 4px solid #f8f9fa;
+  }
+
+  .developer-card h3 {
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .developer-role {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+
+  .developer-bio {
+    color: #6c757d;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .social-link {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .social-link:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+  }
+
+  /* Stats Section */
+  .stats-section {
+    background: linear-gradient(135deg, var(--primary-color), #000);
+    color: white;
+    padding: 4rem 0;
+    margin: 3rem 0;
+    border-radius: 10px;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+
+  /* Process Section */
+  .process-step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+  }
+
+  .step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-right: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .step-content h4 {
+    color: #000;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-content p {
+    color: #6c757d;
+    line-height: 1.6;
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .about-section {
+      padding: 2rem 1.5rem;
+    }
+
+    .feature-card {
+      margin-bottom: 1.5rem;
+    }
+
+    .process-step {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .step-number {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+    }
+
+    .developer-card {
+      padding: 2rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .about-section {
+      padding: 2rem 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      font-size: 1.8rem;
+    }
+
+    .developer-img {
+      width: 120px;
+      height: 120px;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<!-- About Section -->
+<div class="container py-5">
+  <div class="about-section">
+    <!-- Header -->
+    <div class="about-header">
+      <h1 class="display-5 fw-bold">Tentang iPhone Recommender</h1>
+      <p class="lead">
+        Sistem rekomendasi iPhone bekas pintar yang dikembangkan untuk membantu
+        Anda menemukan pilihan terbaik berdasarkan kebutuhan dan budget.
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h4>Algoritma SAW</h4>
+          <p>
+            Menggunakan metode Simple Additive Weighting untuk analisis yang
+            akurat dalam merekomendasikan iPhone terbaik berdasarkan preferensi
+            pengguna.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-database"></i>
+          </div>
+          <h4>Data Terpercaya</h4>
+          <p>
+            Database iPhone yang lengkap dengan spesifikasi dan kondisi
+            terverifikasi, memastikan rekomendasi yang reliable dan dapat
+            dipertanggungjawabkan.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h4>User-Friendly</h4>
+          <p>
+            Interface yang intuitif dan mudah digunakan, membuat proses
+            pencarian iPhone bekas menjadi pengalaman yang menyenangkan dan
+            efisien.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+      <div class="row text-center">
+        <div class="col-md-3 col-6 mb-4">
+          <div class="stat-item">
+            <div class="stat-number">8+</div>
+            <div class="stat-label">Model iPhone</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+          <div class="stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Data Terverifikasi</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+          <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Tersedia</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+          <div class="stat-item">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Developer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="row mt-5">
+      <div class="col-lg-8 mx-auto">
+        <h3 class="text-center mb-4">Bagaimana Sistem Bekerja</h3>
+
+        <div class="process-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Input Preferensi</h4>
+            <p>
+              Pengguna menentukan bobot prioritas untuk setiap kriteria seperti
+              harga, kamera, memori, kondisi baterai, dan kondisi fisik sesuai
+              kebutuhan.
+            </p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Proses Perhitungan</h4>
+            <p>
+              Sistem menganalisis semua alternatif iPhone menggunakan algoritma
+              SAW untuk menghitung nilai preferensi tertinggi berdasarkan input
+              pengguna.
+            </p>
+          </div>
+        </div>
+
+        <div class="process-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Hasil Rekomendasi</h4>
+            <p>
+              Menampilkan daftar rekomendasi iPhone yang telah diurutkan
+              berdasarkan skor tertinggi, dilengkapi dengan analisis detail dan
+              perbandingan.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Developer Section -->
+    <div class="developer-section">
+      <h3 class="text-center mb-4">Pengembang</h3>
+      <div class="developer-card">
+        <img
+          src="{% static 'image/4.png' %}"
+          alt="Andika Setiawan"
+          class="developer-img"
+        />
+        <h3>Andika Setiawan</h3>
+        <div class="developer-role">Full Stack Developer</div>
+        <div class="developer-bio">
+          Saya seorang developer yang passionate dalam menciptakan solusi
+          teknologi yang bermanfaat. iPhone Recommender dikembangkan sebagai
+          proyek capstone untuk membantu masyarakat dalam memilih iPhone bekas
+          yang tepat.
+        </div>
+        <div class="social-links">
+          <a
+            href="mailto:andikamelawi.net22@gmail.com"
+            class="social-link"
+            title="Email"
+          >
+            <i class="fas fa-envelope"></i>
+          </a>
+          <a href="#" class="social-link" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="#" class="social-link" title="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="#" class="social-link" title="Portfolio">
+            <i class="fas fa-globe"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission Vision -->
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-bullseye"></i>
+          </div>
+          <h4>Misi</h4>
+          <p>
+            Menyediakan sistem rekomendasi iPhone bekas yang akurat dan
+            terpercaya, membantu pengguna membuat keputusan pembelian yang tepat
+            dan menguntungkan.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-eye"></i>
+          </div>
+          <h4>Visi</h4>
+          <p>
+            Menjadi platform rekomendasi smartphone terdepan yang menggunakan
+            teknologi AI untuk memberikan pengalaman berbelanja yang lebih
+            cerdas dan efisien.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

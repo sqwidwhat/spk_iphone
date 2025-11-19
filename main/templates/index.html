@@ -1,0 +1,545 @@
+{% extends 'base.html' %} {% load static %} Beranda - iPhone Recommender{%
+endblock %} {% block extra_css %}
+
+<style>
+  /* Hero Section Styles khusus untuk input.html */
+  .hero-section {
+    background: white;
+    color: black;
+    padding: 4rem 0;
+    margin-bottom: 2rem;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    height: 100%;
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-img {
+    max-height: 500px;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .container-tombol {
+    display: block;
+  }
+
+  /* Tombol versi mobile disembunyikan */
+  .container-tombol-mobile {
+    display: none;
+  }
+
+  /* iPhone Slider Section */
+  .iphone-slider-section {
+    padding: 4rem 0;
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .iphone-slider {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem 0;
+  }
+
+  .iphone-slider-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    gap: 1.5rem;
+  }
+
+  .iphone-card {
+    flex: 0 0 280px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .iphone-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .iphone-card-img {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    background: #f5f5f5;
+  }
+
+  .iphone-card-body {
+    padding: 1.5rem;
+  }
+
+  .iphone-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .iphone-card-text {
+    color: #6c757d;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .iphone-card-price {
+    font-weight: bold;
+    color: #000;
+    font-size: 1.1rem;
+  }
+
+  .slider-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 1rem;
+  }
+
+  .slider-btn {
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+  }
+
+  .slider-btn:hover {
+    background: #333;
+    transform: scale(1.1);
+  }
+
+  .slider-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .slider-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+  }
+
+  .slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .slider-dot.active {
+    background: #000;
+    transform: scale(1.2);
+  }
+
+  /* Features Section */
+  .feature-card {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #000;
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 1200px) {
+    .iphone-card {
+      flex: 0 0 260px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .hero-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .hero-img {
+      max-height: 400px;
+      max-width: 80%;
+      margin: 0 auto;
+    }
+
+    .container-tombol {
+      display: none;
+    }
+
+    .container-tombol-mobile {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .iphone-card {
+      flex: 0 0 240px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      height: auto;
+      padding: 3rem 0;
+      height: 100dvh;
+      min-height: -webkit-fill-available;
+    }
+
+    .hero-content {
+      gap: 1.5rem;
+    }
+
+    .hero-img {
+      max-height: 300px;
+      max-width: 90%;
+    }
+
+    .hero-text h1 {
+      font-size: 2rem;
+    }
+
+    .hero-text .lead {
+      font-size: 1.1rem;
+    }
+
+    .container-tombol {
+      display: none;
+    }
+
+    .container-tombol-mobile {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .iphone-slider-section {
+      padding: 3rem 0;
+    }
+
+    .iphone-card {
+      flex: 0 0 220px;
+    }
+
+    .slider-btn {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .hero-section {
+      padding: 2rem 0;
+    }
+
+    .hero-img {
+      max-height: 250px;
+    }
+
+    .hero-text h1 {
+      font-size: 1.75rem;
+    }
+
+    .container-tombol {
+      display: none;
+    }
+
+    .container-tombol-mobile {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .iphone-slider-section {
+      padding: 2rem 0;
+    }
+
+    .iphone-card {
+      flex: 0 0 200px;
+    }
+
+    .iphone-card-img {
+      height: 160px;
+    }
+
+    .iphone-card-body {
+      padding: 1rem;
+    }
+
+    .slider-btn {
+      width: 40px;
+      height: 40px;
+      font-size: 1rem;
+    }
+  }
+</style>
+{% load humanize %} {% endblock %} {% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="display-4 fw-bold mb-3">Sistem Rekomendasi iPhone Bekas</h1>
+        <p class="lead">
+          Dapatkan rekomendasi iPhone bekas seri 12-14 terbaik berdasarkan
+          preferensi Anda
+        </p>
+        <div class="container-tombol">
+          <a href="{% url 'rekomendasi' %}">
+            <button type="button" class="btn btn-dark" style="width: 150px">
+              Mulai
+            </button>
+          </a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="{% static 'image/m5.jpeg' %}" alt="iPhone" class="hero-img" />
+      </div>
+      <div class="container-tombol-mobile">
+        <a href="{% url 'rekomendasi' %}">
+          <button type="button" class="btn btn-dark" style="width: 150px">
+            Mulai
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- iPhone Slider Section -->
+<section class="iphone-slider-section">
+  <div class="container">
+    <div class="section-title">
+      <h2 class="fw-bold">Model iPhone Tersedia</h2>
+      <p class="lead">Jelajahi berbagai model iPhone bekas berkualitas</p>
+    </div>
+
+    <div class="iphone-slider">
+      <div class="iphone-slider-container" id="iphoneSlider">
+        {% for iphone in semua_iphone %}
+        <div class="iphone-card">
+          {% if iphone.gambar %}
+          <img
+            src="{{ iphone.gambar }}"
+            alt="{{ iphone.nama }}"
+            class="iphone-card-img"
+          />
+          {% endif %}
+          <div class="iphone-card-body">
+            <h5 class="iphone-card-title">{{ iphone.nama }}</h5>
+            <p class="iphone-card-text">
+              Kondisi: {{ iphone.kondisi_fisik }}% - Kamera {{ iphone.kamera }}
+              MP - Memori Internal {{ iphone.memori }}GB
+            </p>
+            <p class="iphone-card-price">
+              Rp {{ iphone.harga|floatformat:0|intcomma }}
+            </p>
+            <a
+              href="{% url 'detail_iphone' iphone.id %}"
+              class="btn btn-dark w-100"
+              >Detail Produk</a
+            >
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-center">Belum ada data iPhone tersedia.</p>
+        {% endfor %}
+      </div>
+
+      <div class="slider-nav">
+        <button class="slider-btn" id="prevBtn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="slider-btn" id="nextBtn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="slider-dots" id="sliderDots">
+        <!-- Dots akan di-generate oleh JavaScript -->
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %} {% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const slider = document.getElementById("iphoneSlider");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const sliderDots = document.getElementById("sliderDots");
+
+    let currentPosition = 0;
+    const cardWidth = 280 + 24; // Lebar card + gap
+    const totalCards = slider.children.length;
+    let cardsPerView = Math.floor(slider.parentElement.offsetWidth / cardWidth);
+    const totalSlides = Math.ceil(totalCards / cardsPerView);
+
+    // Inisialisasi slider
+    function initSlider() {
+      // Update cardsPerView berdasarkan lebar layar
+      cardsPerView = Math.floor(slider.parentElement.offsetWidth / cardWidth);
+
+      // Clear existing dots
+      sliderDots.innerHTML = "";
+
+      // Generate dots
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement("div");
+        dot.classList.add("slider-dot");
+        if (i === 0) dot.classList.add("active");
+        dot.addEventListener("click", () => goToSlide(i));
+        sliderDots.appendChild(dot);
+      }
+
+      updateButtons();
+    }
+
+    // Update status tombol navigasi
+    function updateButtons() {
+      prevBtn.disabled = currentPosition >= 0;
+      nextBtn.disabled =
+        Math.abs(currentPosition) >= (totalCards - cardsPerView) * cardWidth;
+    }
+
+    // Navigate to specific slide
+    function goToSlide(slideIndex) {
+      currentPosition = -slideIndex * cardWidth * cardsPerView;
+      slider.style.transform = `translateX(${currentPosition}px)`;
+      updateDots();
+      updateButtons();
+    }
+
+    // Update dots indicator
+    function updateDots() {
+      const dots = document.querySelectorAll(".slider-dot");
+      const currentSlide =
+        Math.abs(currentPosition) / (cardWidth * cardsPerView);
+
+      dots.forEach((dot, index) => {
+        if (index === currentSlide) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+      });
+    }
+
+    // Next button
+    nextBtn.addEventListener("click", function () {
+      if (Math.abs(currentPosition) < (totalCards - cardsPerView) * cardWidth) {
+        currentPosition -= cardWidth * cardsPerView;
+        slider.style.transform = `translateX(${currentPosition}px)`;
+        updateDots();
+        updateButtons();
+      }
+    });
+
+    // Previous button
+    prevBtn.addEventListener("click", function () {
+      if (currentPosition < 0) {
+        currentPosition += cardWidth * cardsPerView;
+        slider.style.transform = `translateX(${currentPosition}px)`;
+        updateDots();
+        updateButtons();
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener("resize", function () {
+      initSlider();
+      // Reset to first slide on resize
+      currentPosition = 0;
+      slider.style.transform = `translateX(0px)`;
+      updateDots();
+      updateButtons();
+    });
+
+    // Initialize slider on load
+    initSlider();
+
+    // Tambahkan swipe functionality untuk mobile
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+
+    slider.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+    });
+
+    slider.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      currentX = e.touches[0].clientX;
+      const diff = startX - currentX;
+
+      // Only allow horizontal dragging
+      if (Math.abs(diff) > 10) {
+        e.preventDefault();
+      }
+    });
+
+    slider.addEventListener("touchend", (e) => {
+      if (!isDragging) return;
+
+      const diff = startX - currentX;
+
+      if (diff > 50) {
+        // Swipe left - next
+        nextBtn.click();
+      } else if (diff < -50) {
+        // Swipe right - previous
+        prevBtn.click();
+      }
+
+      isDragging = false;
+    });
+  });
+</script>
+{% endblock %}

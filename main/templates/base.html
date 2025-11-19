@@ -1,0 +1,249 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Sistem Rekomendasi iPhone{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: black;
+        --secondary-color: #6c757d;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+        --success-color: #28a745;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      /* Link Aktif */
+      .navbar .nav-link.active {
+        color: black !important;
+        text-decoration: underline;
+        text-underline-offset: 10px; /* Jarak garis bawah dari teks */
+        text-decoration-thickness: 2px; /* Ketebalan garis bawah, opsional */
+        transition: all 0.3s ease;
+      }
+
+      .form-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .criteria-input {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .criteria-label {
+        font-weight: 600;
+        color: var(--dark-color);
+      }
+
+      .rating-info {
+        font-size: 0.85rem;
+        color: var(--secondary-color);
+      }
+
+      .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+      }
+
+      footer {
+        background-color: var(--dark-color);
+        color: white;
+        padding: 2rem 0;
+        margin-top: 3rem;
+      }
+
+      .social-icons a {
+        color: white;
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        transition: color 0.3s ease;
+      }
+
+      .social-icons a:hover {
+        color: var(--primary-color);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .feature-card {
+        text-align: center;
+        padding: 1.5rem;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        height: 100%;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-section {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+        margin-top: 2rem;
+      }
+
+      @media (max-width: 768px) {
+        .form-container {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <!-- Header/Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+          <i class="fab fa-apple me-2"></i>iPhone Recommender
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <!-- Beranda -->
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == '/' %}active{% endif %}"
+                href="{% url 'index' %}"
+                >Beranda</a
+              >
+            </li>
+
+            <!-- Rekomendasi -->
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == '/rekomendasi_saw/' %}active{% endif %}"
+                href="{% url 'rekomendasi' %}"
+                >Rekomendasi</a
+              >
+            </li>
+
+            <!-- Tentang -->
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == '/tentang/' %}active{% endif %}"
+                href="{% url 'tentang' %}"
+                >Tentang</a
+              >
+            </li>
+
+            <!-- Kontak -->
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == '/kontak/' %}active{% endif %}"
+                href="{% url 'kontak' %}"
+                >Kontak</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content Block -->
+    {% block content %} {% endblock %}
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mb-4 mb-md-0">
+            <h5>iPhone Recommender</h5>
+            <p>
+              Sistem rekomendasi iPhone bekas terbaik berdasarkan preferensi
+              Anda dengan metode SAW.
+            </p>
+          </div>
+          <div class="col-md-3 mb-4 mb-md-0">
+            <h5>Tautan Cepat</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a
+                  href="{% url 'rekomendasi' %}"
+                  class="text-white text-decoration-none"
+                  >Beranda</a
+                >
+              </li>
+              <li>
+                <a href="/tentang/" class="text-white text-decoration-none"
+                  >Tentang</a
+                >
+              </li>
+              <li>
+                <a href="/kontak/" class="text-white text-decoration-none"
+                  >Kontak</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-3">
+            <h5>Hubungi Kami</h5>
+            <div class="social-icons">
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4 bg-light" />
+        <div class="text-center">
+          <p>&copy; 2025 iPhone Recommender. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

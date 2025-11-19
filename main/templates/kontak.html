@@ -1,0 +1,421 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Kontak - iPhone
+Recommender{% endblock %} {% block extra_css %}
+<style>
+  /* Contact Section Styles */
+  .contact-section {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 3rem;
+    margin: 2rem 0;
+  }
+
+  .contact-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .contact-header h1 {
+    color: #000;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .contact-header p {
+    color: #6c757d;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid var(--primary-color);
+  }
+
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .contact-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), #000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: white;
+    font-size: 1.8rem;
+  }
+
+  .contact-info h4 {
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .contact-info p {
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .contact-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .contact-link:hover {
+    color: #000;
+  }
+
+  /* Contact Form Styles */
+  .contact-form {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 2.5rem;
+    margin-top: 2rem;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1);
+  }
+
+  .submit-btn {
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  .submit-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Map Section */
+  .map-section {
+    margin-top: 3rem;
+  }
+
+  .map-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    height: 400px;
+  }
+
+  /* FAQ Section */
+  .faq-section {
+    margin-top: 4rem;
+  }
+
+  .faq-item {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1rem;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .faq-item:hover {
+    border-left-color: var(--primary-color);
+  }
+
+  .faq-question {
+    padding: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    font-weight: 600;
+    color: #000;
+  }
+
+  .faq-answer {
+    padding: 0 1.5rem 1.5rem;
+    color: #6c757d;
+    display: none;
+  }
+
+  .faq-item.active .faq-answer {
+    display: block;
+  }
+
+  .faq-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .faq-item.active .faq-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .contact-section {
+      padding: 2rem 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .contact-form {
+      padding: 2rem;
+    }
+
+    .contact-card {
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-header h1 {
+      font-size: 2rem;
+    }
+
+    .map-container {
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .contact-section {
+      padding: 1.5rem 1rem;
+    }
+
+    .contact-form {
+      padding: 1.5rem;
+    }
+
+    .contact-icon {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<!-- Contact Section -->
+<div class="container py-5">
+  <div class="contact-section">
+    <!-- Header -->
+    <div class="contact-header">
+      <h1 class="display-5 fw-bold">Hubungi Kami</h1>
+      <p>
+        Butuh bantuan dalam memilih iPhone bekas terbaik? Tim kami siap membantu
+        Anda dengan rekomendasi yang tepat sesuai kebutuhan dan budget.
+      </p>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="contact-info">
+            <h4>Telepon</h4>
+            <p>Hubungi saya untuk memberikan saran</p>
+            <a href="tel:+6281549282208" class="contact-link">
+              +62 815-4928-2208
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="contact-info">
+            <h4>Email</h4>
+            <p>Kirim pertanyaan Anda kapan saja</p>
+            <a href="mailto:andikamelawi.net11@gmail.com" class="contact-link"
+              >andikamelawi.net11@gmail.com</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="contact-info">
+            <h4>Lokasi</h4>
+            <p>Kunjungi kantor kami</p>
+            <p class="contact-link">Jl. Sejarah No. 3D, Pontianak</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="contact-form">
+          <h3 class="mb-4">Kirim Pesan</h3>
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nama Lengkap</label>
+                {{ form.name }}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+                {{ form.email }}
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Subjek</label>
+                {{ form.subject }}
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Pesan</label>
+                {{ form.message }}
+              </div>
+
+              <div class="col-12">
+                <button type="submit" class="submit-btn">
+                  <i class="fas fa-paper-plane me-2"></i>Kirim Pesan
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="map-section">
+      <h4 class="text-center mb-4">Lokasi Kami</h4>
+      <div class="map-container">
+        <!-- Ganti dengan embed map Google Maps Anda -->
+
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.8179669194997!2d109.3192421!3d-0.0241162!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e1d59193e5f049d%3A0x6ded180d57c77ade!2sKos%20Yoga!5e0!3m2!1sid!2sid!4v1761903601900!5m2!1sid!2sid"
+          width="100%"
+          height="100%"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+        >
+        </iframe>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <h3 class="text-center mb-4">Pertanyaan Umum</h3>
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="faq-item">
+            <div class="faq-question">
+              <span
+                >Bagaimana cara mendapatkan rekomendasi iPhone terbaik?</span
+              >
+              <i class="fas fa-chevron-down faq-icon ms-2"></i>
+            </div>
+            <div class="faq-answer">
+              <p>
+                Gunakan sistem rekomendasi kami dengan mengisi preferensi Anda
+                pada halaman rekomendasi. Sistem akan menganalisis berdasarkan
+                kriteria yang Anda berikan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll(".faq-item");
+
+    faqItems.forEach((item) => {
+      const question = item.querySelector(".faq-question");
+
+      question.addEventListener("click", () => {
+        // Close all other items
+        faqItems.forEach((otherItem) => {
+          if (otherItem !== item) {
+            otherItem.classList.remove("active");
+          }
+        });
+
+        // Toggle current item
+        item.classList.toggle("active");
+      });
+    });
+
+    // Contact Form Submission
+    const contactForm = document.getElementById("contactForm");
+
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Simple form validation
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const subject = document.getElementById("subject").value;
+      const message = document.getElementById("message").value;
+
+      if (name && email && subject && message) {
+        // Simulate form submission
+        const submitBtn = contactForm.querySelector(".submit-btn");
+        const originalText = submitBtn.innerHTML;
+
+        submitBtn.innerHTML =
+          '<i class="fas fa-spinner fa-spin me-2"></i>Mengirim...';
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+          alert(
+            "Pesan Anda telah berhasil dikirim! Kami akan membalas dalam 1x24 jam."
+          );
+          contactForm.reset();
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }, 2000);
+      }
+    });
+  });
+</script>
+{% endblock %}

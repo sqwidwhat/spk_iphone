@@ -1,0 +1,295 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Hasil{% endblock %}
+{% block extra_css %}
+<style>
+  .result-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+
+  .iphone-card {
+    border-left: 4px solid var(--primary-color);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+  }
+
+  .iphone-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    margin-right: 1rem;
+  }
+
+  .score-badge {
+    background-color: var(--success-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  .specs-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .specs-list li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .specs-list li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+  }
+
+  .recommendation-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ffc107;
+    color: #212529;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    transform: rotate(5deg);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .info-section {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+
+  .custom-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .custom-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .custom-list li:before {
+    content: "•";
+    color: var(--primary-color);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+  }
+
+  @media (max-width: 768px) {
+    .result-container {
+      padding: 1.5rem;
+    }
+
+    .iphone-card {
+      padding: 1rem;
+    }
+
+    .recommendation-badge {
+      position: relative;
+      top: 0;
+      right: 0;
+      transform: none;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+  }
+</style>
+{% load humanize %} {% endblock %} {% block content %}
+<!-- Main Content -->
+<main class="container py-5">
+  <div class="result-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">Rekomendasi iPhone Terbaik</h2>
+      <span class="badge fs-6" style="background-color: black">
+        Total: {{ hasil_saw|length }} iPhone
+      </span>
+    </div>
+
+    <p class="text-muted mb-4">
+      Berikut adalah daftar rekomendasi iPhone bekas berdasarkan preferensi yang
+      Anda berikan, diurutkan dari skor tertinggi ke terendah.
+    </p>
+
+    <!-- Results List -->
+    <div class="results-list">
+      {% for item in hasil_saw %}
+      <div
+        class="iphone-card mb-4 p-3 border rounded shadow-sm position-relative bg-white"
+      >
+        {% if forloop.first %}
+        <div
+          class="recommendation-badge position-absolute top-0 end-0 bg-warning text-dark fw-bold px-2 py-1 rounded-start"
+        >
+          <i class="fas fa-crown me-1"></i> TERBAIK
+        </div>
+        {% endif %}
+
+        <div class="row g-3 align-items-center">
+          <!-- Gambar iPhone -->
+          <div class="col-md-4 text-center">
+            {% if item.iphone.gambar %}
+            <img
+              src="{{ item.iphone.gambar }}"
+              alt="{{ item.iphone.nama }}"
+              class="img-fluid rounded shadow-sm"
+              style="max-height: 250px; object-fit: contain"
+            />
+            {% else %}
+            <div
+              class="bg-light d-flex align-items-center justify-content-center rounded"
+              style="height: 250px"
+            >
+              <span class="text-muted">Tidak ada gambar</span>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Informasi iPhone -->
+          <div class="col-md-8">
+            <div class="d-flex align-items-start mb-3">
+              <div
+                class="rank-badge bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3"
+                style="width: 40px; height: 40px"
+              >
+                {{ forloop.counter }}
+              </div>
+              <div class="flex-grow-1">
+                <h3 class="h4 mb-1">{{ item.iphone.nama }}</h3>
+                <span class="badge bg-secondary"
+                  >Skor: {{ item.skor|floatformat:4 }}</span
+                >
+              </div>
+            </div>
+
+            <!-- Spesifikasi -->
+            <div class="row">
+              <div class="col-md-6">
+                <h5 class="mb-2">📱 Spesifikasi:</h5>
+                <ul class="list-unstyled">
+                  <li>
+                    <strong>Harga:</strong>
+                    Rp {{ item.iphone.harga|floatformat:0|intcomma }}
+                  </li>
+                  <li>
+                    <strong>Kualitas Kamera:</strong> {{ item.iphone.kamera }} %
+                  </li>
+                  <li>
+                    <strong>Memori Internal:</strong> {{ item.iphone.memori }}
+                    GB
+                  </li>
+                  <li>
+                    <strong>Kondisi Fisik:</strong>
+                    {{ item.iphone.kondisi_fisik }}%
+                  </li>
+                  <li>
+                    <strong>Kondisi Baterai:</strong>
+                    {{item.iphone.kondisi_baterai }}%
+                  </li>
+                  <a
+                    href="{% url 'detail_iphone' item.iphone.id %}"
+                    class="btn btn-dark w-30 mt-2"
+                    >Detail Produk</a
+                  >
+                </ul>
+              </div>
+
+              <div class="col-md-6">
+                <h5 class="mb-2">🏅 Keunggulan:</h5>
+                <div class="d-flex flex-wrap gap-2">
+                  {% if forloop.counter <= 3 %}
+                  <span class="badge bg-success">Rekomendasi Tinggi</span>
+                  {% endif %}
+                  <span class="badge bg-info"
+                    >Skor {{ item.skor|floatformat:2 }}</span
+                  >
+                  {% if forloop.first %}
+                  <span class="badge bg-warning text-dark"
+                    >Pilihan Terbaik</span
+                  >
+                  {% endif %} {% if item.skor > 0.8 %}
+                  <span class="badge bg-danger">Sangat Direkomendasikan</span>
+                  {% elif item.skor > 0.6 %}
+                  <span class="badge bg-primary">Direkomendasikan</span>
+                  {% else %}
+                  <span class="badge bg-secondary">Cukup Baik</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-center gap-3 mt-5">
+      <a href="{% url 'rekomendasi' %}" class="btn btn-dark">
+        <i class="fas fa-redo-alt me-2"></i>Ulangi Perhitungan
+      </a>
+      <button class="btn btn-outline-primary">
+        <i class="fas fa-download me-2"></i>Unduh Hasil
+      </button>
+    </div>
+  </div>
+
+  <!-- Additional Info Section -->
+  <div class="info-section">
+    <h4 class="mb-3">Tentang Metode SAW</h4>
+    <p>
+      Simple Additive Weighting (SAW) adalah metode pengambilan keputusan
+      multikriteria yang mengevaluasi setiap alternatif berdasarkan jumlah
+      tertimbang dari semua atributnya. iPhone dengan skor tertinggi merupakan
+      rekomendasi terbaik berdasarkan preferensi Anda.
+    </p>
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <h5>Interpretasi Skor:</h5>
+        <ul class="custom-list">
+          <li><strong>Skor > 0.8:</strong> Sangat direkomendasikan</li>
+          <li><strong>Skor 0.6 - 0.8:</strong> Direkomendasikan</li>
+          <li><strong>Skor < 0.6:</strong> Pertimbangkan alternatif lain</li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <h5>Tips Memilih:</h5>
+        <ul class="custom-list">
+          <li>Pertimbangkan budget dan kebutuhan spesifik Anda</li>
+          <li>Periksa kondisi fisik iPhone sebelum membeli</li>
+          <li>Pastikan garansi dan asuransi jika tersedia</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
