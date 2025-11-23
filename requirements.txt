@@ -3,7 +3,7 @@ contourpy==1.3.2
 cycler==0.12.1
 diff-match-patch==20241021
 distlib==0.3.9
-Django==5.2.1
+Django==4.2.7
 django-colorfield==0.14.0
 django-import-export==4.3.13
 django-jazzmin==3.0.1
@@ -13,18 +13,14 @@ fonttools==4.58.4
 gunicorn==23.0.0
 kiwisolver==1.4.8
 matplotlib==3.10.3
-mysql==0.0.3
-mysqlclient==2.2.6
+mysqlclient==2.1.1
 numpy==2.1.3
-opencv-contrib-python==4.11.0.86
 opencv-python==4.11.0.86
 openpyxl==3.1.5
 packaging==25.0
 pandas==2.3.3
 pillow==11.3.0
 platformdirs==4.3.6
-PyMySQL==1.1.1
-pyparsing==3.2.3
 python-dateutil==2.9.0.post0
 python-slugify==8.0.4
 pytz==2025.2
@@ -33,8 +29,4 @@ sqlparse==0.5.3
 tablib==3.9.0
 text-unidecode==1.3
 tzdata==2025.2
-virtualenv==20.28.0
-dj-database-url
-Django==4.2.7
-mysqlclient==2.1.1
 dj-database-url==2.1.0
