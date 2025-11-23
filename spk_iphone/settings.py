@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-#-u2w&h4cmxoi4$%xvz70=o7!#t)2y0z2v688pwqxl4p1$78*q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*",] 
 
 
 # Application definition
@@ -55,6 +56,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'spk_iphone.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -80,20 +82,26 @@ WSGI_APPLICATION = 'spk_iphone.wsgi.application'
 
 # settings.py
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'spk_iphone',  # HARUS SAMA dengan nama database yang baru Anda buat
-        'USER' : 'root',
-        'PASSWORD' : '',
-        'HOST': 'localhost',  # Umumnya 'localhost'
-        'PORT': '3307',       # Port default MariaDB/MySQL
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            'charset': 'utf8mb4',
+if os.getenv("RAILWAY_ENVIRONMENT"):
+    # Jika running di Railway → pakai PostgreSQL
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'spk_iphone',  # HARUS SAMA dengan nama database yang baru Anda buat
+            'USER' : 'root',
+            'PASSWORD' : '',
+            'HOST': 'localhost',  # Umumnya 'localhost'
+            'PORT': '3307',       # Port default MariaDB/MySQL
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                'charset': 'utf8mb4',
+            }
         }
     }
-}
 
 
 # Password validation

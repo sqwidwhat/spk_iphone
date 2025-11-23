@@ -94,7 +94,7 @@ class IphoneAdmin(ImportExportModelAdmin):
         'gambar_preview'
     )
     list_filter = ('memori', 'kondisi_fisik', 'kondisi_baterai')
-    search_fields = ('kode', 'nama', 'deskripsi')  # ⭐ TAMBAHKAN KODE DI SEARCH
+    search_fields = ('kode', 'nama', 'deskripsi') 
     readonly_fields = ('gambar_preview_large',)
     list_per_page = 20
     
@@ -111,16 +111,16 @@ class IphoneAdmin(ImportExportModelAdmin):
         # Ubah dari MP menjadi rating
         if obj.kamera >= 95:
             color = 'success'
-            label = 'Excellent'
+            label = 'Sangat Baik'
         elif obj.kamera >= 90:
             color = 'info'
-            label = 'Very Good'
+            label = 'Baik'
         elif obj.kamera >= 85:
             color = 'warning'
-            label = 'Good'
+            label = 'Cukup'
         else:
             color = 'secondary'
-            label = 'Standard'
+            label = 'Kurang'
         return format_html(
             '<span class="badge bg-{}">{} - {}</span>',
             color, obj.kamera, label
