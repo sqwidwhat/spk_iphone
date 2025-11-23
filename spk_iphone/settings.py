@@ -89,7 +89,7 @@ import os
 import dj_database_url
 
 # Database configuration
-if os.getenv("RAILWAY_ENVIRONMENT"):
+if os.getenv("DATABASE_URL"):
     # Railway environment - use DATABASE_URL
     DATABASES = {
         'default': dj_database_url.config(
