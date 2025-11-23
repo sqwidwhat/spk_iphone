@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 import dj_database_url
+import pymysql
 from pathlib import Path
+
+
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,26 +86,27 @@ WSGI_APPLICATION = 'spk_iphone.wsgi.application'
 
 # settings.py
 
-import dj_database_url
-import os
 
-import os
-import dj_database_url
+# Detect if running on Railway
+ON_RAILWAY = "RAILWAY_ENVIRONMENT" in os.environ
 
-# Database configuration
-if os.getenv("DATABASE_URL"):
-    # Railway environment - use DATABASE_URL
+if ON_RAILWAY:
+    # Production (Railway)
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.getenv('DATABASE_URL'),
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('MYSQLDATABASE'),
+            'USER': os.getenv('MYSQLUSER'),
+            'PASSWORD': os.getenv('MYSQLPASSWORD'),
+            'HOST': os.getenv('MYSQLHOST'),
+            'PORT': os.getenv('MYSQLPORT', '3306'),
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+            },
+        }
     }
-    # Force MySQL engine
-    DATABASES['default']['ENGINE'] = 'django.db.backends.mysql'
 else:
-    # Local development
+    # Local Development
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
