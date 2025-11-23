@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,22 +88,25 @@ WSGI_APPLICATION = 'spk_iphone.wsgi.application'
 # settings.py
 
 
+# Database
 # Detect if running on Railway
-ON_RAILWAY = "RAILWAY_ENVIRONMENT" in os.environ
+ON_RAILWAY = os.getenv("RAILWAY_ENVIRONMENT") == "production"
 
 if ON_RAILWAY:
-    # Production (Railway)
+    # Production (Railway) - MySQL
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.getenv('MYSQLDATABASE'),
-            'USER': os.getenv('MYSQLUSER'),
-            'PASSWORD': os.getenv('MYSQLPASSWORD'),
-            'HOST': os.getenv('MYSQLHOST'),
+            'NAME': os.getenv('MYSQLDATABASE', 'railway'),
+            'USER': os.getenv('MYSQLUSER', 'root'),
+            'PASSWORD': os.getenv('MYSQLPASSWORD', ''),
+            'HOST': os.getenv('MYSQLHOST', 'localhost'),
             'PORT': os.getenv('MYSQLPORT', '3306'),
             'OPTIONS': {
                 'charset': 'utf8mb4',
+                'ssl': {'ssl': {}} if os.getenv('MYSQL_SSL') else {}
             },
+            'CONN_MAX_AGE': 600,
         }
     }
 else:
@@ -119,6 +123,15 @@ else:
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
                 'charset': 'utf8mb4',
             }
+        }
+    }
+
+# Fallback to SQLite if MySQL not available (for testing)
+if ON_RAILWAY and not all([os.getenv('MYSQLHOST'), os.getenv('MYSQLUSER'), os.getenv('MYSQLPASSWORD')]):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 # Password validation
@@ -169,6 +182,14 @@ STATICFILES_DIRS = [
 
 # Folder tujuan untuk file statis di lingkungan produksi
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Static files configuration for production
+if ON_RAILWAY:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Kirim
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
