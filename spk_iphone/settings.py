@@ -82,28 +82,44 @@ WSGI_APPLICATION = 'spk_iphone.wsgi.application'
 
 # settings.py
 
+import dj_database_url
+import os
+
+import os
+import dj_database_url
+
 if os.getenv("RAILWAY_ENVIRONMENT"):
-    # Jika running di Railway → pakai PostgreSQL
-    DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600)
-    }
-else:
+    # Jika running di Railway → pakai MySQL juga
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'spk_iphone',  # HARUS SAMA dengan nama database yang baru Anda buat
-            'USER' : 'root',
-            'PASSWORD' : '',
-            'HOST': 'localhost',  # Umumnya 'localhost'
-            'PORT': '3307',       # Port default MariaDB/MySQL
+            'NAME': os.getenv('MYSQLDATABASE', 'railway'),
+            'USER': os.getenv('MYSQLUSER', 'root'),
+            'PASSWORD': os.getenv('MYSQLPASSWORD', ''),
+            'HOST': os.getenv('MYSQLHOST', 'localhost'),
+            'PORT': os.getenv('MYSQLPORT', '3306'),
             'OPTIONS': {
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
                 'charset': 'utf8mb4',
             }
         }
     }
-
-
+else:
+    # Development local
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'spk_iphone',
+            'USER': 'root',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '3307',
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                'charset': 'utf8mb4',
+            }
+        }
+    }
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
